@@ -197,7 +197,7 @@ namespace MockEfDbSet.Test.ServiceTests
             service.RemovePersonAsync(new Person { FirstName = "John", LastName = "Doe" });
 
             // Assert
-            // verify that DbSet.Add has been called once
+            // verify that DbSet.Remove has been called once
             mockSet.Received(1).Remove(Arg.Any<Person>());
             // verify that DbContext.SaveChangesAsync has been called once
             mockContext.Received(1).SaveChangesAsync();
