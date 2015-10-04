@@ -58,7 +58,7 @@ namespace MockEfDbSet.Test.ServiceTests
             ((IQueryable<Person>)mockSet).ElementType.Returns(data.ElementType);
             ((IQueryable<Person>)mockSet).GetEnumerator().Returns(data.GetEnumerator());
 
-            // do the wiring between context and DbSet
+            // do the wiring between DbContext and DbSet
             var mockContext = Substitute.For<IPeopleDbContext>();
             mockContext.People.Returns(mockSet);
             var service = new PeopleService(mockContext);
@@ -102,7 +102,7 @@ namespace MockEfDbSet.Test.ServiceTests
             ((IQueryable<Person>)mockSet).ElementType.Returns(data.ElementType);
             ((IQueryable<Person>)mockSet).GetEnumerator().Returns(data.GetEnumerator());
 
-            // do the wiring between context and DbSet
+            // do the wiring between DbContext and DbSet
             var mockContext = Substitute.For<IPeopleDbContext>();
             mockContext.People.Returns(mockSet);
             var service = new PeopleService(mockContext);
@@ -116,5 +116,93 @@ namespace MockEfDbSet.Test.ServiceTests
             Assert.That(people[1].FirstName, Is.EqualTo("ZZZ"));
             Assert.That(people[2].FirstName, Is.EqualTo("AAA"));
         }
+
+        [Test]
+        public async void GetPersonAsync_ReturnsThePersonWithTheGivenId()
+        {
+            // The above setup for one single test looks too much
+            // let's encapsulate all that code inside the 
+            // NSubstituteUtils.CreateMockDbSet static method
+
+            // Arrange
+
+            // first create the collection of data. It no longer has to be an IQueryable
+            var data = new List<Person> 
+            { 
+                new Person { Id = 1, FirstName = "BBB" }, 
+                new Person { Id = 2, FirstName = "ZZZ" }, 
+                new Person { Id = 3, FirstName = "AAA" }, 
+            };
+
+            // create the mock DbSet using the helper method
+            var mockSet = NSubstituteUtils.CreateMockDbSet(data);
+            // do the wiring between DbContext and DbSet
+            var mockContext = Substitute.For<IPeopleDbContext>();
+            mockContext.People.Returns(mockSet);
+            var service = new PeopleService(mockContext);
+
+            // Act
+            var secondPerson = await service.GetPersonAsync(2);
+
+            // Assert
+            Assert.That(secondPerson.Id, Is.EqualTo(2));
+            Assert.That(secondPerson.FirstName, Is.EqualTo("ZZZ"));
+        }
+
+        [Test]
+        public void GetPerson_ReturnsThePersonWithTheGivenId()
+        {
+            // Let's make sure our static helper method works 
+            // equally well for synchronous operations
+
+            // Arrange
+
+            // first create the collection of data. It no longer has to be an IQueryable
+            var data = new List<Person> 
+            { 
+                new Person { Id = 1, FirstName = "BBB" }, 
+                new Person { Id = 2, FirstName = "ZZZ" }, 
+                new Person { Id = 3, FirstName = "AAA" }, 
+            };
+
+            // create the mock DbSet using the helper method
+            var mockSet = NSubstituteUtils.CreateMockDbSet(data);
+            // do the wiring between DbContext and DbSet
+            var mockContext = Substitute.For<IPeopleDbContext>();
+            mockContext.People.Returns(mockSet);
+            var service = new PeopleService(mockContext);
+
+            // Act
+            var secondPerson = service.GetPerson(2);
+
+            // Assert
+            Assert.That(secondPerson.Id, Is.EqualTo(2));
+            Assert.That(secondPerson.FirstName, Is.EqualTo("ZZZ"));
+        }
+
+        [Test]
+        public void RemovePerson_CallsRemoveAndSaveFromDbSet()
+        {
+            // Let's also make sure that our static helper method
+            // works well for non-read operations, where no 
+            // initial data is required
+
+            // Arrange
+            var mockSet = NSubstituteUtils.CreateMockDbSet<Person>();
+            var mockContext = Substitute.For<IPeopleDbContext>();
+            mockContext.People.Returns(mockSet);
+            var service = new PeopleService(mockContext);
+
+            // Act
+            service.RemovePersonAsync(new Person { FirstName = "John", LastName = "Doe" });
+
+            // Assert
+            // verify that DbSet.Add has been called once
+            mockSet.Received(1).Remove(Arg.Any<Person>());
+            // verify that DbContext.SaveChangesAsync has been called once
+            mockContext.Received(1).SaveChangesAsync();
+
+        }
+
     }
 }

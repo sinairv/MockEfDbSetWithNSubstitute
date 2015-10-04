@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using MockEfDbSet.Test.Dal;
 
@@ -43,6 +41,12 @@ namespace MockEfDbSet.Test.Services
         public async Task<Person> GetPersonAsync(int id)
         {
             return await _peopleDbContext.People.FirstOrDefaultAsync(p => p.Id == id);
+        }
+
+        public async void RemovePersonAsync(Person person)
+        {
+            _peopleDbContext.People.Remove(person);
+            await _peopleDbContext.SaveChangesAsync();
         }
     }
 }
