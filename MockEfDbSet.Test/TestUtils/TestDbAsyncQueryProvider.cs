@@ -4,7 +4,7 @@ using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MockEfDbSet.Test.Test.Infrastructure
+namespace MockEfDbSet.Test.TestUtils
 {
     public class TestDbAsyncQueryProvider<TEntity> : IDbAsyncQueryProvider
     {

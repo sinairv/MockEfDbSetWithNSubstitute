@@ -6,7 +6,7 @@ using MockEfDbSet.Test.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity.Infrastructure;
-using MockEfDbSet.Test.Test.Infrastructure;
+using MockEfDbSet.Test.TestUtils;
 
 namespace MockEfDbSet.Test.ServiceTests
 {

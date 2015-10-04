@@ -3,7 +3,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace MockEfDbSet.Test.Test.Infrastructure
+namespace MockEfDbSet.Test.TestUtils
 {
     public class TestDbAsyncEnumerable<T> : EnumerableQuery<T>, IDbAsyncEnumerable<T>, IQueryable<T>
     {

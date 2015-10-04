@@ -58,10 +58,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\PeopleService.cs" />
     <Compile Include="ServiceTests\PeopleServiceTests.cs" />
-    <Compile Include="Test.Infrastructure\NSubstituteUtils.cs" />
-    <Compile Include="Test.Infrastructure\TestDbAsyncEnumerable.cs" />
-    <Compile Include="Test.Infrastructure\TestDbAsyncEnumerator.cs" />
-    <Compile Include="Test.Infrastructure\TestDbAsyncQueryProvider.cs" />
+    <Compile Include="TestUtils\NSubstituteUtils.cs" />
+    <Compile Include="TestUtils\TestDbAsyncEnumerable.cs" />
+    <Compile Include="TestUtils\TestDbAsyncEnumerator.cs" />
+    <Compile Include="TestUtils\TestDbAsyncQueryProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

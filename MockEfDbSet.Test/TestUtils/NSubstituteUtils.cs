@@ -1,10 +1,10 @@
-﻿using NSubstitute;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
+using NSubstitute;
 
-namespace MockEfDbSet.Test.Test.Infrastructure
+namespace MockEfDbSet.Test.TestUtils
 {
     public static class NSubstituteUtils
     {
