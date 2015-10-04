@@ -1,0 +1,16 @@
+*.suo
+*.user
+*.pdb
+*.vshost.exe
+*.vshost.exe.manifest
+*.ncrunchproject
+*.ncrunchsolution
+obj/
+_ReSharper*/
+Bin/*.dll
+Bin/*.xml
+Bin/*.dll.mdb
+*/bin/Debug/*
+/packages/*
+!/packages/repositories.config
+TestResult.xml
