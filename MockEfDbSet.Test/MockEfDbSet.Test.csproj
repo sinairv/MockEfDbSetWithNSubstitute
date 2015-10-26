@@ -58,6 +58,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\PeopleService.cs" />
     <Compile Include="ServiceTests\PeopleServiceTests.cs" />
+    <Compile Include="TestUtils\MockableDbSetWithExtensions.cs" />
     <Compile Include="TestUtils\NSubstituteUtils.cs" />
     <Compile Include="TestUtils\TestDbAsyncEnumerable.cs" />
     <Compile Include="TestUtils\TestDbAsyncEnumerator.cs" />

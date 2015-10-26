@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Threading.Tasks;
 using MockEfDbSet.Test.Dal;
@@ -43,9 +44,25 @@ namespace MockEfDbSet.Test.Services
             return await _peopleDbContext.People.FirstOrDefaultAsync(p => p.Id == id);
         }
 
+        public Person GetPersonNoTracking(int id)
+        {
+            return _peopleDbContext.People.AsNoTracking().FirstOrDefault(p => p.Id == id);
+        }
+
+        public async Task<Person> GetPersonNoTrackingAsync(int id)
+        {
+            return await _peopleDbContext.People.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id);
+        }
+
         public async void RemovePersonAsync(Person person)
         {
             _peopleDbContext.People.Remove(person);
+            await _peopleDbContext.SaveChangesAsync();
+        }
+
+        public async Task AddOrUpdatePerson(Person person)
+        {
+            _peopleDbContext.People.AddOrUpdate(person);
             await _peopleDbContext.SaveChangesAsync();
         }
     }

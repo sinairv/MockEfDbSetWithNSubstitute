@@ -3,6 +3,8 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using NSubstitute;
+using System.Linq.Expressions;
+using System;
 
 namespace MockEfDbSet.Test.TestUtils
 {
@@ -11,7 +13,8 @@ namespace MockEfDbSet.Test.TestUtils
         public static DbSet<T> CreateMockDbSet<T>(IEnumerable<T> data = null)
             where T: class
         {
-            var mockSet = Substitute.For<DbSet<T>, IQueryable<T>, IDbAsyncEnumerable<T>>();
+            var mockSet = Substitute.For<MockableDbSetWithExtensions<T>, IQueryable<T>, IDbAsyncEnumerable<T>>();
+            mockSet.AsNoTracking().Returns(mockSet);
 
             if (data != null)
             {

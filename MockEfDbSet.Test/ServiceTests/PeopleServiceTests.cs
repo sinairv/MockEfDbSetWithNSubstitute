@@ -6,6 +6,7 @@ using MockEfDbSet.Test.Services;
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.Migrations;
 using MockEfDbSet.Test.TestUtils;
 
 namespace MockEfDbSet.Test.ServiceTests
@@ -202,6 +203,80 @@ namespace MockEfDbSet.Test.ServiceTests
             // verify that DbContext.SaveChangesAsync has been called once
             mockContext.Received(1).SaveChangesAsync();
 
+        }
+
+        [Test]
+        public async void AddOrUpdatePerson_CallsAddOrUpdateFromDbSet()
+        {
+            // Arrange
+            var mockSet = NSubstituteUtils.CreateMockDbSet<Person>();
+            var mockContext = Substitute.For<IPeopleDbContext>();
+            mockContext.People.Returns(mockSet);
+            var service = new PeopleService(mockContext);
+
+            // Act
+            await service.AddOrUpdatePerson(new Person { FirstName = "John", LastName = "Doe" });
+
+            // Assert
+            // verify that DbSet.AddOrUpdate has been called once
+            mockSet.Received(1).AddOrUpdate(Arg.Any<Person>());
+            mockContext.Received(1).SaveChangesAsync();
+        }
+
+        [Test]
+        public async void GetPersonNoTrackingAsync_ReturnsThePersonWithTheGivenId()
+        {
+            // Arrange
+
+            // first create the collection of data. It no longer has to be an IQueryable
+            var data = new List<Person> 
+            { 
+                new Person { Id = 1, FirstName = "BBB" }, 
+                new Person { Id = 2, FirstName = "ZZZ" }, 
+                new Person { Id = 3, FirstName = "AAA" }, 
+            };
+
+            // create the mock DbSet using the helper method
+            var mockSet = NSubstituteUtils.CreateMockDbSet(data);
+            // do the wiring between DbContext and DbSet
+            var mockContext = Substitute.For<IPeopleDbContext>();
+            mockContext.People.Returns(mockSet);
+            var service = new PeopleService(mockContext);
+
+            // Act
+            var secondPerson = await service.GetPersonNoTrackingAsync(2);
+
+            // Assert
+            Assert.That(secondPerson.Id, Is.EqualTo(2));
+            Assert.That(secondPerson.FirstName, Is.EqualTo("ZZZ"));
+        }
+
+        [Test]
+        public void GetPersonNoTracking_ReturnsThePersonWithTheGivenId()
+        {
+            // Arrange
+
+            // first create the collection of data. It no longer has to be an IQueryable
+            var data = new List<Person> 
+            { 
+                new Person { Id = 1, FirstName = "BBB" }, 
+                new Person { Id = 2, FirstName = "ZZZ" }, 
+                new Person { Id = 3, FirstName = "AAA" }, 
+            };
+
+            // create the mock DbSet using the helper method
+            var mockSet = NSubstituteUtils.CreateMockDbSet(data);
+            // do the wiring between DbContext and DbSet
+            var mockContext = Substitute.For<IPeopleDbContext>();
+            mockContext.People.Returns(mockSet);
+            var service = new PeopleService(mockContext);
+
+            // Act
+            var secondPerson = service.GetPersonNoTracking(2);
+
+            // Assert
+            Assert.That(secondPerson.Id, Is.EqualTo(2));
+            Assert.That(secondPerson.FirstName, Is.EqualTo("ZZZ"));
         }
 
     }
