@@ -16,7 +16,9 @@ namespace MockEfDbSet.Test.TestUtils
 
         public void Dispose()
         {
-            _inner.Dispose();
+            // Do not dispose the inner enumerator, since it might be enumerated again, 
+            // reset it instead
+            _inner.Reset();
         }
 
         public Task<bool> MoveNextAsync(CancellationToken cancellationToken)

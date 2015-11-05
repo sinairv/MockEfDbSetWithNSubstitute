@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using MockEfDbSet.Test.Dal;
 using MockEfDbSet.Test.TestUtils;
@@ -26,6 +27,27 @@ namespace MockEfDbSet.Test.MiscTests
 
             var people1 = mockContext.People.ToArray();
             var people2 = mockContext.People.ToArray();
+
+            Assert.That(people1.Length, Is.EqualTo(3));
+            Assert.That(people2.Length, Is.EqualTo(3));
+        }
+
+        [Test]
+        public async void MockDbSetCanBeEnumeratedMoreThanOnce_Asynchronously()
+        {
+            var data = new List<Person>
+            {
+                new Person { Id = 1, FirstName = "BBB" },
+                new Person { Id = 2, FirstName = "ZZZ" },
+                new Person { Id = 3, FirstName = "AAA" },
+            };
+
+            var mockSet = NSubstituteUtils.CreateMockDbSet(data);
+            var mockContext = Substitute.For<IPeopleDbContext>();
+            mockContext.People.Returns(mockSet);
+
+            var people1 = await mockContext.People.ToArrayAsync();
+            var people2 = await mockContext.People.ToArrayAsync();
 
             Assert.That(people1.Length, Is.EqualTo(3));
             Assert.That(people2.Length, Is.EqualTo(3));
