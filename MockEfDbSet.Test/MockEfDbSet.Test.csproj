@@ -55,6 +55,7 @@
     <Compile Include="Dal\IPeopleDbContext.cs" />
     <Compile Include="Dal\PeopleDbContext.cs" />
     <Compile Include="Dal\Person.cs" />
+    <Compile Include="MiscTests\EnumeratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\PeopleService.cs" />
     <Compile Include="ServiceTests\PeopleServiceTests.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="TestUtils\TestDbAsyncEnumerable.cs" />
     <Compile Include="TestUtils\TestDbAsyncEnumerator.cs" />
     <Compile Include="TestUtils\TestDbAsyncQueryProvider.cs" />
+    <Compile Include="TestUtils\TestDbEnumerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

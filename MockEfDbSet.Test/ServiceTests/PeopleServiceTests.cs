@@ -278,6 +278,5 @@ namespace MockEfDbSet.Test.ServiceTests
             Assert.That(secondPerson.Id, Is.EqualTo(2));
             Assert.That(secondPerson.FirstName, Is.EqualTo("ZZZ"));
         }
-
     }
 }

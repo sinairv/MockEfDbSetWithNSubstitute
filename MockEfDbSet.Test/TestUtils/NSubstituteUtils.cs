@@ -3,8 +3,6 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
 using NSubstitute;
-using System.Linq.Expressions;
-using System;
 
 namespace MockEfDbSet.Test.TestUtils
 {
@@ -27,7 +25,7 @@ namespace MockEfDbSet.Test.TestUtils
                 ((IQueryable<T>) mockSet).Provider.Returns(new TestDbAsyncQueryProvider<T>(queryable.Provider));
                 ((IQueryable<T>) mockSet).Expression.Returns(queryable.Expression);
                 ((IQueryable<T>) mockSet).ElementType.Returns(queryable.ElementType);
-                ((IQueryable<T>) mockSet).GetEnumerator().Returns(queryable.GetEnumerator());
+                ((IQueryable<T>) mockSet).GetEnumerator().Returns(new TestDbEnumerator<T>(queryable.GetEnumerator()));
             }
 
             return mockSet;
